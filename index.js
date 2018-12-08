@@ -18,6 +18,10 @@ app.all('*', function(req, res, next) {
   next();
 });
 
+app.get('/', function(req, res) {
+  res.send('ok');
+});
+
 app.post('/post', function(req, res) {
   console.log('请求参数：', req.body);
   exec('cd /home/www/tgf21');
