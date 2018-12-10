@@ -4,7 +4,7 @@ var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 var hostName = '127.0.0.1';
 var port = 8080;
-let { exec } = require('child_process')
+let {exec} = require('child_process');
 
 app.all('*', function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -24,10 +24,17 @@ app.get('/', function(req, res) {
 
 app.post('/post', function(req, res) {
   console.log('请求参数：', req.body);
-  exec('cd /home/www/tgf21');
-  exec('git pull origin master');
-  var result = {code: 200, msg: 'ok'};
-  res.send(result);
+  exec(
+    'cd /home/www/tgf21 && git pull origin master',
+    function(err, stdout, stderr) {
+      if (err) {
+        console.log(err)
+        res.send(err);
+      }
+      console.log(stdout);
+      res.send(stdout);
+    }
+  );
 });
 
 app.listen(port, hostName, function() {
